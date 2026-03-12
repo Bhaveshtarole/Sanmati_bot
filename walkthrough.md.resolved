@@ -1,0 +1,310 @@
+# 🎓 Sanmati Engineering College — WhatsApp Admission Bot
+## Full System Report
+
+---
+
+## 1. System Overview
+
+This is a **production-ready WhatsApp Admission Automation System** built for Sanmati Engineering College. It provides two main capabilities:
+
+1. **AI Admission Counselor** — An intelligent WhatsApp chatbot that answers student queries about admissions, fees, placements, hostel, etc., using an AI model powered by OpenRouter.
+2. **Marketing Broadcast Tool** — A standalone script to send bulk WhatsApp template messages to CET students from a CSV/Excel file.
+
+```mermaid
+flowchart TD
+    A["📱 Student sends<br>WhatsApp message"] --> B["☁️ Meta Cloud API"]
+    B -->|Webhook POST| C["🌍 ngrok tunnel"]
+    C --> D["⚡ FastAPI Server<br>(uvicorn on port 8000)"]
+    D --> E{"Message Router"}
+    E -->|"1, 2, or 3"| F["📋 Menu Templates<br>(Engineering/ITI/Nursing)"]
+    E -->|"hi, hello, menu"| G["🙏 Welcome Message"]
+    E -->|"Free-text question"| H["🤖 OpenRouter AI<br>(stepfun/step-3.5-flash)"]
+    F --> I["📤 WhatsApp API<br>Send Response"]
+    G --> I
+    H --> I
+    I --> J["📱 Student receives reply"]
+    D --> K["🗄️ SQLite Database<br>(sanmati.db)"]
+    K --> L["👤 Students Table"]
+    K --> M["💬 Interactions Table"]
+    D --> N["🔥 Hot Lead Detection"]
+```
+
+---
+
+## 2. Technology Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | FastAPI (Python) | Async web server for webhook handling |
+| **Server** | Uvicorn | ASGI server with hot-reload |
+| **Database** | SQLAlchemy + SQLite | Student records & interaction logging |
+| **AI Brain** | OpenRouter API (`stepfun/step-3.5-flash:free`) | Knowledge-based admission counselor |
+| **WhatsApp** | Meta WhatsApp Cloud API (direct `httpx` calls) | Send/receive messages |
+| **Tunnel** | ngrok | Expose local server to the internet |
+| **Broadcast** | pandas + httpx | Bulk marketing message sender |
+
+---
+
+## 3. Project Structure
+
+```
+sanmati bot/
+├── .env                          # API keys and secrets (not in git)
+├── .env.example                  # Template for .env
+├── .gitignore                    # Git exclusions
+├── requirements.txt              # Python dependencies
+├── knowledge.txt                 # College info (AI knowledge base)
+├── broadcast.py                  # Marketing broadcast tool
+├── sample_students.csv           # Sample data for broadcast
+├── sanmati.db                    # SQLite database (auto-created)
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py                   # FastAPI app entry point
+│   ├── config.py                 # Settings loaded from .env
+│   ├── database.py               # SQLAlchemy engine & session
+│   ├── models.py                 # Student & Interaction ORM models
+│   ├── schemas.py                # Pydantic validation schemas
+│   │
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── webhook.py            # GET/POST /webhook endpoints
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── gemini.py             # OpenRouter AI integration
+│   │   ├── whatsapp.py           # WhatsApp send functions
+│   │   └── lead_detector.py      # Hot lead keyword scanner
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py            # Payload extraction helpers
+│
+└── tests/
+    ├── __init__.py
+    └── test_lead_detector.py     # 31 unit tests for lead detection
+```
+
+---
+
+## 4. How Each Component Works
+
+### 4.1 Configuration — [config.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/config.py)
+
+Uses a frozen `@dataclass` to load secrets from [.env](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/.env) at startup:
+
+| Variable | Purpose |
+|----------|---------|
+| `WHATSAPP_TOKEN` | Meta access token for sending messages |
+| `WHATSAPP_PHONE_NUMBER_ID` | Your WhatsApp Business phone ID |
+| `WEBHOOK_VERIFY_TOKEN` | Secret for Meta webhook verification |
+| `OPENROUTER_API_KEY` | API key for AI responses via OpenRouter |
+
+Also provides computed properties [wa_messages_url](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/config.py#25-28) and [wa_headers](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/config.py#29-35) for convenient API calls.
+
+---
+
+### 4.2 App Entry Point — [main.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/main.py)
+
+- Creates the FastAPI application with metadata (title, description, version)
+- On startup: creates all database tables via `Base.metadata.create_all()`
+- Includes the webhook router
+- Provides a health check at `GET /`
+
+---
+
+### 4.3 Database — [database.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/database.py) + [models.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/models.py)
+
+**Engine:** SQLite file ([sanmati.db](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/sanmati.db)), created automatically on first run.
+
+**Tables:**
+
+```mermaid
+erDiagram
+    STUDENTS {
+        int id PK
+        string name
+        string phone UK
+        string exam_type
+        string language
+        boolean is_hot_lead
+        datetime created_at
+        datetime updated_at
+    }
+    INTERACTIONS {
+        int id PK
+        int student_id FK
+        string message_direction
+        text message_body
+        string message_type
+        datetime timestamp
+    }
+    STUDENTS ||--o{ INTERACTIONS : "has many"
+```
+
+- **Students:** Tracks every unique phone number that contacts the bot. Stores name, phone, exam type, language preference, and hot lead status.
+- **Interactions:** Logs every single message (inbound AND outbound) with direction, body, and type.
+
+---
+
+### 4.4 Webhook Handler — [webhook.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/routers/webhook.py)
+
+This is the **core brain** of the bot. It handles two endpoints:
+
+#### `GET /webhook` — Meta Verification
+When you configure the webhook URL in Meta Developer Portal, Meta sends a GET request with `hub.mode`, `hub.verify_token`, and `hub.challenge`. The server checks the token and returns the challenge as a `PlainTextResponse`.
+
+#### `POST /webhook` — Incoming Messages
+This is the main message processing pipeline:
+
+```mermaid
+flowchart TD
+    A["POST /webhook<br>payload received"] --> B["Extract phone, text,<br>sender name"]
+    B --> C{Has message?}
+    C -->|No| D["Return 'ignored'<br>(status update)"]
+    C -->|Yes| E["Get/Create Student<br>in database"]
+    E --> F["Log inbound<br>interaction"]
+    F --> G["Check hot lead<br>keywords"]
+    G --> H{Message routing}
+    H -->|"1, 2, or 3"| I["Send menu info<br>(template → fallback text)"]
+    H -->|"hi/hello/menu"| J["Send welcome<br>message"]
+    H -->|"anything else"| K["Send to OpenRouter AI<br>for smart reply"]
+    I --> L["Log outbound<br>interaction"]
+    J --> L
+    K --> L
+    L --> M["Return 'processed'"]
+```
+
+**Message Routing Rules:**
+| User Input | Bot Action |
+|-----------|-----------|
+| `1` | Engineering Programs info (fees, seats, branches) |
+| `2` | ITI Courses info (trades, duration, fees) |
+| `3` | Nursing Programs info (B.Sc, GNM, ANM) |
+| `hi`, `hello`, `hey`, [start](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/main.py#38-44), `menu` | Welcome message with quick menu |
+| Any other text | OpenRouter AI answers based on knowledge.txt |
+
+---
+
+### 4.5 WhatsApp Service — [whatsapp.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/services/whatsapp.py)
+
+Two async functions that make direct HTTP calls to Meta's WhatsApp Cloud API:
+
+- **[send_text_message(phone, text)](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/services/whatsapp.py#14-47)** — Sends a plain text message
+- **[send_template_message(phone, template_name)](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/services/whatsapp.py#49-95)** — Sends a pre-approved template (with fallback to text if template doesn't exist)
+
+Both use `httpx.AsyncClient` for non-blocking HTTP calls and log errors if the API returns a non-200 status.
+
+---
+
+### 4.6 AI Brain — [gemini.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/services/gemini.py)
+
+Despite the filename, this now uses **OpenRouter** (via the OpenAI SDK):
+
+1. **Loads** [knowledge.txt](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/knowledge.txt) at startup — a comprehensive document with all college info (programs, fees, placements, campus, admission process, contacts)
+2. **Constructs a system prompt** that instructs the AI to act as an admission counselor and answer ONLY from the knowledge base
+3. **Model:** `stepfun/step-3.5-flash:free` via OpenRouter
+4. **Temperature:** `0.3` (low creativity for factual answers)
+5. **Fallback:** If the API fails, returns a polite error message with the helpline number
+
+---
+
+### 4.7 Hot Lead Detection — [lead_detector.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/services/lead_detector.py)
+
+Scans every incoming message for **high-intent keywords**:
+
+```
+fees, admission, placement, seat, apply, hostel, scholarship,
+cutoff, last date, deadline, merit, counselling
+```
+
+Uses a pre-compiled regex for efficient matching. When detected, the student's `is_hot_lead` flag is set to `True` in the database — useful for prioritizing follow-ups.
+
+---
+
+### 4.8 Broadcast Tool — [broadcast.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/broadcast.py)
+
+A standalone CLI script for bulk marketing:
+
+```bash
+python broadcast.py --file students.csv --template admission_welcome --batch-size 50
+```
+
+**Features:**
+- Reads student data from CSV or Excel (requires a `phone` column)
+- Sends WhatsApp template messages in rate-limited batches
+- Default: 100 messages per batch, 1-hour delay between batches
+- 0.5-second delay between individual messages
+- Logs success/failure counts with a final summary
+
+---
+
+### 4.9 Message Payload Extraction — [helpers.py](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/app/utils/helpers.py)
+
+Parses Meta's nested webhook JSON payload to extract:
+- **Phone number** (`from` field)
+- **Message text** (`text.body`)
+- **Sender name** (`contacts[0].profile.name`)
+
+Gracefully returns [(None, None, None)](file:///c:/Users/bhave/OneDrive/Desktop/sanmati%20bot/broadcast.py#166-207) for non-message payloads (like delivery status updates).
+
+---
+
+## 5. Data Flow — End to End
+
+Here's what happens when a student sends "What are the fees for CSE?" on WhatsApp:
+
+1. **Student** sends message on WhatsApp to the business number
+2. **Meta** receives it and POSTs the webhook payload to `https://neumic-fistic-elin.ngrok-free.dev/webhook`
+3. **ngrok** tunnels the request to `localhost:8000`
+4. **FastAPI** receives the POST, extracts phone/text/name
+5. **Database** creates or retrieves the student record
+6. **Inbound interaction** is logged
+7. **Hot lead detector** scans for keywords — "fees" is found → student marked as 🔥 hot lead
+8. **Message router** sees it's free text → sends to OpenRouter AI
+9. **OpenRouter** generates a response using the knowledge base (CSE fees = ₹75,000/yr)
+10. **WhatsApp service** sends the AI reply back via Meta API
+11. **Outbound interaction** is logged
+12. **Student** receives the answer on WhatsApp
+
+---
+
+## 6. Environment Variables
+
+| Variable | Current Value | Source |
+|----------|--------------|-------|
+| `WHATSAPP_TOKEN` | `EAAPUWH2...` (temporary, expires ~24h) | Meta Developer Portal → API Setup |
+| `WHATSAPP_PHONE_NUMBER_ID` | `1007742869090752` | Meta App Dashboard |
+| `WEBHOOK_VERIFY_TOKEN` | `sanmati_webhook_secret_2025` | Custom secret (set by us) |
+| `OPENROUTER_API_KEY` | `sk-or-v1-e6ea...` | OpenRouter Dashboard |
+
+---
+
+## 7. How to Start the System
+
+```bash
+# 1. Start the FastAPI server
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+
+# 2. Start ngrok tunnel (in a separate terminal)
+ngrok http 8000
+
+# 3. Configure webhook in Meta Developer Portal:
+#    Callback URL: https://<ngrok-url>/webhook
+#    Verify Token: sanmati_webhook_secret_2025
+#    Subscribe to: messages
+```
+
+---
+
+## 8. Testing Summary
+
+| Test | Result |
+|------|--------|
+| Health check (`GET /`) | ✅ 200 OK |
+| Webhook verification (`GET /webhook`) | ✅ Returns challenge |
+| Webhook POST (simulated message) | ✅ 200 "processed" |
+| WhatsApp API send (text) | ✅ 200 OK, message delivered |
+| WhatsApp API send (template fallback) | ✅ Falls back to text when template doesn't exist |
+| Hot lead detection (31 unit tests) | ✅ All passed |
+| ngrok tunnel | ✅ Forwarding to localhost:8000 |
