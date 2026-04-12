@@ -49,7 +49,7 @@ class Student(Base):
     name = Column(String(100), nullable=True)
     phone = Column(String(20), unique=True, index=True, nullable=False)
     exam_type = Column(String(30), nullable=True)  # CET / COMEDK / KCET
-    language = Column(String(5), default="en")  # en / kn / hi
+    language = Column(String(5), nullable=True, default=None)  # en / hi / mr — set on first contact
     is_hot_lead = Column(Boolean, default=False)
 
     # ── New lead management fields ───────────────────────────────────

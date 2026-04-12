@@ -11,6 +11,33 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 
+async def mark_as_read(message_id: str) -> None:
+    """
+    Mark a WhatsApp message as read (shows blue ticks).
+    Call this immediately on receiving a message to show responsiveness.
+    """
+    if not message_id:
+        return
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "status": "read",
+        "message_id": message_id,
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.post(
+                settings.wa_messages_url,
+                headers=settings.wa_headers,
+                json=payload,
+            )
+        if response.status_code != 200:
+            logger.warning("Mark-as-read failed: %s", response.text)
+    except Exception as e:
+        logger.warning("Mark-as-read error (non-critical): %s", e)
+
+
 async def send_text_message(phone: str, text: str) -> dict:
     """
     Send a plain text message to a WhatsApp number.
@@ -39,6 +66,53 @@ async def send_text_message(phone: str, text: str) -> dict:
     if response.status_code != 200:
         logger.error(
             "WhatsApp text send failed: %s — %s",
+            response.status_code,
+            response.text,
+        )
+
+    return response.json()
+
+
+async def send_document_message(
+    phone: str,
+    document_url: str,
+    filename: str,
+    caption: str | None = None,
+) -> dict:
+    """
+    Send a document via a public URL to a WhatsApp number.
+
+    Args:
+        phone: Recipient phone number.
+        document_url: Publicly accessible URL of the document.
+        filename: Name of the file as it will appear on WhatsApp.
+        caption: Optional text caption below the document.
+
+    Returns:
+        Meta API response as dict.
+    """
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": phone,
+        "type": "document",
+        "document": {
+            "link": document_url,
+            "filename": filename,
+        },
+    }
+    if caption:
+        payload["document"]["caption"] = caption
+
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.post(
+            settings.wa_messages_url,
+            headers=settings.wa_headers,
+            json=payload,
+        )
+
+    if response.status_code != 200:
+        logger.error(
+            "WhatsApp document send failed: %s — %s",
             response.status_code,
             response.text,
         )
@@ -99,6 +173,7 @@ async def send_interactive_buttons(
     body_text: str,
     buttons: list[dict],
     header_text: str | None = None,
+    header_image_url: str | None = None,
     footer_text: str | None = None,
 ) -> dict:
     """
@@ -109,6 +184,7 @@ async def send_interactive_buttons(
         body_text: Main message body.
         buttons: List of dicts with 'id' and 'title' keys (max 3).
         header_text: Optional header text.
+        header_image_url: Optional image URL for the header.
         footer_text: Optional footer text.
 
     Returns:
@@ -125,8 +201,11 @@ async def send_interactive_buttons(
         },
     }
 
-    if header_text:
+    if header_image_url:
+        interactive["header"] = {"type": "image", "image": {"link": header_image_url}}
+    elif header_text:
         interactive["header"] = {"type": "text", "text": header_text}
+        
     if footer_text:
         interactive["footer"] = {"text": footer_text}
 

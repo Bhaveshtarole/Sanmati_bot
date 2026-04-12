@@ -7,33 +7,34 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def extract_whatsapp_message(payload: dict) -> tuple[str | None, str | None, str | None]:
+def extract_whatsapp_message(payload: dict) -> tuple[str | None, str | None, str | None, str | None]:
     """
-    Extract sender phone, message text, and sender name from a WhatsApp
-    Cloud API webhook payload.
+    Extract sender phone, message text, sender name, and message ID from a
+    WhatsApp Cloud API webhook payload.
 
     Args:
         payload: The full JSON body from Meta's POST /webhook.
 
     Returns:
-        (phone, message_text, sender_name) — any may be None if not found.
+        (phone, message_text, sender_name, message_id) — any may be None.
     """
     try:
         entry = payload.get("entry", [])
         if not entry:
-            return None, None, None
+            return None, None, None, None
 
         changes = entry[0].get("changes", [])
         if not changes:
-            return None, None, None
+            return None, None, None, None
 
         value = changes[0].get("value", {})
         messages = value.get("messages", [])
         if not messages:
-            return None, None, None
+            return None, None, None, None
 
         message = messages[0]
         phone = message.get("from")
+        message_id = message.get("id")  # wamid for read receipts
         message_text = None
         sender_name = None
 
@@ -56,8 +57,8 @@ def extract_whatsapp_message(payload: dict) -> tuple[str | None, str | None, str
             profile = contacts[0].get("profile", {})
             sender_name = profile.get("name")
 
-        return phone, message_text, sender_name
+        return phone, message_text, sender_name, message_id
 
     except (IndexError, KeyError, TypeError) as e:
         logger.error("Failed to extract WhatsApp message: %s", e, exc_info=True)
-        return None, None, None
+        return None, None, None, None

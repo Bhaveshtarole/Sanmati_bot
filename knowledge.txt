@@ -1,150 +1,108 @@
 ═══════════════════════════════════════════════════════════════
-                SANMATI ENGINEERING COLLEGE
-          Approved by AICTE | Affiliated to VTU, Belagavi
+                SANMATI ENGINEERING COLLEGE, WASHIM
+  Approved by AICTE & DTE | Affiliated to Sant Gadge Baba Amravati University (SGBAU)
+                      NAAC Accredited
 ═══════════════════════════════════════════════════════════════
 
-📍 Location: Latur, Maharashtra (Near Bus Stand)
-📞 Admission Helpline: 98505 37810
-📧 Email: admissions@sanmati.edu.in
-🌐 Website: www.sanmati.edu.in
+📍 Location: National Highway 161 (Washim-Malegaon Road), approx 12 km from Washim, Maharashtra.
+🏢 Run by: Mukund Education Society, Adv. Vaishali Walchale Jain Group (VWJAIN Group)
+🌟 Established: Academic Year 2009-2010
+🎯 Mission: To bridge the educational divide for students from economically marginalized and rural backgrounds.
+📜 Motto: "Uthishtha | Jagrata | Prapya Varannibodhata" (Arise, awake, and stop not till the goal is reached)
 
 ───────────────────────────────────────────────────────────────
-                    ENGINEERING PROGRAMS
+                    LEADERSHIP & CONTACT DIRECTORY
 ───────────────────────────────────────────────────────────────
-
-Sanmati Engineering College offers the following B.E. programs
-(4-year duration, VTU affiliated):
-
-1. Computer Science & Engineering (CSE) — 120 seats
-2. Electronics & Communication Engineering (ECE) — 60 seats
-3. Mechanical Engineering (ME) — 60 seats
-4. Civil Engineering (CE) — 60 seats
-5. Artificial Intelligence & Machine Learning (AI&ML) — 60 seats
-
-ENGINEERING FEE STRUCTURE (per year):
-• Tuition Fee: ₹55,000 — ₹75,000 (varies by branch)
-• CSE & AI&ML: ₹75,000 per year
-• ECE: ₹65,000 per year
-• ME & CE: ₹55,000 per year
-• Development Fee: ₹5,000 per year
-• Exam Fee: ₹3,000 per year (paid to VTU)
-
-ELIGIBILITY:
-• Passed 12th (PCM) with minimum 45% aggregate (40% for reserved)
-• Valid CET / COMEDK / KCET / JEE Main score
-• Admission through KEA counselling or management quota
-
-SCHOLARSHIPS:
-• Government scholarships for SC/ST/OBC students (full fee waiver)
-• Sanmati Merit Scholarship: Top 10 CET/COMEDK scorers get 50% tuition waiver
-• Sports quota: 25% fee concession for state-level athletes
+• President (VWJAIN Group): Adv. Vaishali Walchale | 855 284 1000 | info@sanmati.in
+• Director: Shri Prasanna Walchale | 855 284 1000 | info@sanmati.in
+• Principal: Dr. A.W. Kolhatkar | 7507802000 | principal@sanmati.in
+• Vice Principal & IQAC Incharge: Prof. Sachin Vyawhare | +91 85509 90903 | s.vyawhare@sanmati.in
+• Admission Cell (General Enquiry): +91 855 284 1000 | info@sanmati.in
+• Training & Placement Cell: +91 855 284 1000 | engineering@sanmati.in
 
 ───────────────────────────────────────────────────────────────
-                       ITI COURSES
+                    ACADEMIC PROGRAMS & INTAKE
 ───────────────────────────────────────────────────────────────
+B.E. (Bachelor of Engineering) - 4 Years Duration | 60 Seats Each
+1. Civil Engineering (HOD: Prof. Kunal Ghadge | +91 7391060812 | hod-civil@sanmati.in)
+2. Computer Science Engineering (HOD: Prof. S.R. Tayade | 855 284 1000 | hod-cse@sanmati.in)
+3. Electrical Engineering (HOD: Prof. Nayanish Ambhore | +91 70382 38444 | hod-elec@sanmati.in)
+4. Mechanical Engineering (HOD: Prof. Swapnil Kurhekar | +91 85509 90922 | hod-mech@sanmati.in)
+5. Artificial Intelligence and Data Science (HOD: Prof. M.G. Jaiswal | +91 7391060816 | hod-ainds@sanmati.in)
 
-Sanmati ITI offers NCVT-affiliated trade courses:
+M.E. (Master of Engineering) - 2 Years Duration | 12 Seats Each
+1. Structural Engineering
+2. Computer Science & IT
 
-1. Fitter — 2 years — 40 seats — ₹15,000/year
-2. Electrician — 2 years — 40 seats — ₹15,000/year
-3. Welder — 1 year — 20 seats — ₹12,000/year
-4. Turner — 2 years — 20 seats — ₹15,000/year
-5. Computer Operator & Programming Assistant (COPA) — 1 year — 40 seats — ₹18,000/year
-
-ELIGIBILITY:
-• Passed 8th or 10th standard (varies by trade)
-• Age: 14 years and above
-
-───────────────────────────────────────────────────────────────
-                    NURSING PROGRAMS
-───────────────────────────────────────────────────────────────
-
-1. B.Sc Nursing — 4 years — 60 seats — ₹85,000/year
-   • Eligibility: 12th (PCB) with 45% minimum
-   • Affiliated to MUHS, Nashik
-   • Clinical training at Sanmati Hospital (500-bed)
-
-2. GNM (General Nursing & Midwifery) — 3.5 years — 40 seats — ₹45,000/year
-   • Eligibility: 12th pass in any stream with 40% minimum
-   • Includes 6 months internship
-
-3. ANM (Auxiliary Nursing & Midwifery) — 2 years — 30 seats — ₹35,000/year
-   • Eligibility: 10th pass with 40% minimum
+First-Year Foundation:
+Science and Humanities Department (HOD: Prof. R.R. Raut | +91 7391060811 | hod-sah@sanmati.in). Focuses on Physics, Chemistry, and Mathematics with extra lectures and comprehensive question banks.
 
 ───────────────────────────────────────────────────────────────
-                 PLACEMENTS & RECRUITERS
+                        ELIGIBILITY CRITERIA
 ───────────────────────────────────────────────────────────────
-
-PLACEMENT HIGHLIGHTS (2024-25):
-• Overall placement rate: 85%
-• Highest package: ₹12 LPA (CSE — placed at Infosys)
-• Average package: ₹4.5 LPA
-• 150+ students placed in top companies
-
-TOP RECRUITING COMPANIES:
-• IT: Infosys, Wipro, TCS, Cognizant, Tech Mahindra, HCL
-• Core: L&T, Godrej, Siemens, Bosch, Kirloskar
-• Healthcare: Apollo Hospitals, Manipal Hospitals, Narayana Health
-• Startups: Zomato, Swiggy, BYJU'S
-
-TRAINING & DEVELOPMENT:
-• Dedicated Training & Placement Cell
-• Aptitude and soft-skills training from 2nd year
-• Industry workshops and hackathons every semester
-• MoU with 20+ companies for internships
+• B.E. First Year: 10+2 with Physics, Math and one of Chemistry/Biology/Vocational. 45% for General, 40% for Reserved. Valid non-zero MHT-CET or JEE Main score.
+• B.E. Direct Second Year: Polytechnic Diploma or B.Sc. with 45% (General) or 40% (Reserved).
+• M.E. First Year: Relevant B.E./B.Tech degree with 45% (General) or 40% (Reserved). GATE score mandatory for CAP seats.
 
 ───────────────────────────────────────────────────────────────
-                  CAMPUS & FACILITIES
+                  INFRASTRUCTURE & FACILITIES
 ───────────────────────────────────────────────────────────────
-
-• 25-acre green campus
-• Smart classrooms with projectors and Wi-Fi
-• Well-equipped laboratories (30+ labs)
-• Central library with 50,000+ books and digital resources
-• Separate hostels for boys and girls
-  — Boys hostel: 300 capacity — ₹40,000/year (with mess)
-  — Girls hostel: 200 capacity — ₹45,000/year (with mess)
-• Cafeteria, sports ground (cricket, football, basketball)
-• Gym, yoga center, and indoor games
-• 24/7 security and CCTV surveillance
-• Transportation facility covering 50 km radius — ₹15,000/year
+• Campus: 10-12 acres of modern infrastructure.
+• Academic Infrastructure: 16 digital classrooms/seminar halls, 180 academic computers. Integration with Google Workspace and Google Classroom.
+• Central Library: 15,000+ books, research reports, e-library, computerized access, and a large reading hall.
+• Residential: Separate boys and girls hostels (100 students capacity, double/triple sharing).
+• Other Amenities: Clean canteen, Auditorium, Transport facility for nearby areas.
+• Spiritual Centers: Bhagwan Mahaveer Temple and a Meditation Centre for holistic well-being.
 
 ───────────────────────────────────────────────────────────────
-                 ADMISSION PROCESS
+                  DEPARTMENT LABORATORIES
 ───────────────────────────────────────────────────────────────
-
-STEP 1: Visit www.sanmaticollege.edu.in or contact helpline
-STEP 2: Fill the online application form
-STEP 3: Submit documents (marksheets, CET score card, ID proof)
-STEP 4: Pay admission fee and confirm seat
-STEP 5: Report to college on the allotted date
-
-IMPORTANT DATES (2025-26):
-• Application opens: April 1, 2025
-• Last date to apply: June 30, 2025
-• CET counselling rounds: July–August 2025
-• Classes begin: September 1, 2025
-
-REQUIRED DOCUMENTS:
-• 10th & 12th marksheets (original + 2 copies)
-• CET / COMEDK / KCET score card
-• Transfer Certificate
-• Migration Certificate (if applicable)
-• Caste Certificate (if applicable)
-• Aadhaar Card
-• 4 passport-size photos
+• Civil Labs: Engineering Mechanics, Strength of Materials, Fluid Mechanics, Transportation, Concrete Technology, Geotechnical, Environmental, CAD, Geology, Surveying.
+• CSE Labs: Programming, AI & Algorithm, CSIT, Emerging Technology (Cloud/IoT), Communication Skill, Central Computing.
+• Electrical Labs: Electrical Machines, Power Systems, Control Systems, Circuit Analysis, Power Electronics, Microprocessor.
+• Mechanical Labs/Workshop: Dynamics of Machine, Heat Transfer, Energy Conversion (IC engines), Refrigeration & AC, Material Science, Measurement System, Central Workshop (foundry, welding).
 
 ───────────────────────────────────────────────────────────────
-                    CONTACT US
+                  TRAINING & PLACEMENTS (2024 Data)
 ───────────────────────────────────────────────────────────────
+• Placement Record: 100 students placed out of 105 offers across 40 visiting companies.
+• Highest Package: 8.5 LPA (up from 3.5 LPA in 2022-23)
+• Average Package: 6.2 LPA
+• Median Package: 5.8 LPA
+• Lowest Package: 4.8 LPA
+• Top Recruiters: IBM, Infosys, Capgemini, TCS, Wipro, Tieto India, Tata Motors, Bajaj Auto, Varroc, General Electric, endurance technologies.
+• MoUs: D-Park Software, Konark Transformers, Vaishnavi Electricals, MR SAC.
 
-🏫 Sanmati Engineering College
-   Near Central Bus Stand, Latur — 413512, Maharashtra
+───────────────────────────────────────────────────────────────
+                        SCHOLARSHIPS
+───────────────────────────────────────────────────────────────
+• Post Matric (SC/ST): ~Rs 89,000
+• Post Matric (OBC/VJNT/SBC): Rs 39,839 to Rs 79,678
+• Rajarshi Shahu Maharaj (EBC): Rs 39,839
+• Minority Scholarship: Rs 50,000
+• Punjabrao Deshmukh Vastigruh Bhatta (Hostel students): Rs 15,000 to 20,000
 
-📞 Admission Helpline: +91 98765 43210
-📞 Office: +91 2382 265000
-📧 admissions@sanmaticollege.edu.in
-📧 info@sanmaticollege.edu.in
-🌐 www.sanmaticollege.edu.in
+───────────────────────────────────────────────────────────────
+       STUDENT LIFE, EVENTS & SOCIAL RESPONSIBILITY
+───────────────────────────────────────────────────────────────
+• Horizon: National Level Technical Symposium (paper presentations, Robo War, LAN gaming, exhibitions).
+• Sankalp: Annual Cultural and Technical event (dance, fashion shows, sports like chess).
+• Unnat Bharat Abhiyan: Rural area visits for health/hygiene check-ups, blood donation, Gram Swachhata Abhiyan, computer literacy, and agriculture equipment maintenance for farmers.
+• Student Associations: e.g., MESA (Mechanical Engineering Student Association).
 
-Office Hours: Monday to Saturday, 9:00 AM — 5:00 PM
+───────────────────────────────────────────────────────────────
+          VWJAIN GROUP EDUCATIONAL ECOSYSTEM
+───────────────────────────────────────────────────────────────
+Sanmati Engineering College is part of a larger network of institutions.
+Washim Campus:
+• Sanmati College of Education (B.Ed)
+• Sanmati Law College (B.A. LL.B 5 years)
+• Sanmati Nursing School (ANM, GNM)
+• Sanmati Private ITI (Electrician, Welder, Fitter, Dress Making)
+• Mohanlalji Walchale PGDMLT College (ADMLT)
+• Sanmati Public School (up to HSC)
+
+Akola Campus:
+• Lt. Pandurang Patil Nursing College (B.Sc and M.Sc Nursing)
+• Sanmati Paramedical College (ADMLT)
+• Uttamrao Dahake College of Education (B.Ed)

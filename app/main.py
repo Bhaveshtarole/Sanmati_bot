@@ -5,6 +5,7 @@ Sanmati Admission Bot + Dashboard — FastAPI entry point.
 import logging
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.database import engine, Base
 
@@ -16,6 +17,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Sanmati Admission Bot", version="2.0.1")
+
+# ── Serve Static Files (Brochure) ───────────────────────────────────
+import os
+os.makedirs("static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.on_event("startup")
 def on_startup():
