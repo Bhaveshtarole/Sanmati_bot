@@ -118,3 +118,18 @@ class LeadNote(Base):
 
     def __repr__(self):
         return f"<LeadNote(id={self.id}, student={self.student_id}, by={self.user_id})>"
+
+
+class Campaign(Base):
+    """A WhatsApp broadcast campaign sent to a group of students."""
+
+    __tablename__ = "campaigns"
+
+    id = Column(Integer, primary_key=True, index=True)
+    message = Column(Text, nullable=False)
+    recipient_group = Column(String(50), nullable=False)  # all / interested / high_cet
+    recipient_count = Column(Integer, default=0)
+    sent_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<Campaign(id={self.id}, group='{self.recipient_group}', count={self.recipient_count})>"
