@@ -104,15 +104,19 @@ async def get_ai_response(
         messages.append({"role": "user", "content": prompt})
 
         response = await _client.chat.completions.create(
-            model="stepfun/step-3.5-flash:free",
+            model="openrouter/owl-alpha",
             messages=messages,
             temperature=0.3,
         )
         
-        return response.choices[0].message.content.strip()
+        reply = response.choices[0].message.content
+        if not reply:
+            logger.warning("OpenRouter returned empty response.")
+            return "Could you please rephrase your question? I'd love to help! 😊"
+        return reply.strip()
 
     except Exception as e:
-        logger.error("OpenRouter API error: %s", e, exc_info=True)
+        logger.error("OpenRouter API error (%s): %s", type(e).__name__, e, exc_info=True)
         return (
             "I'm sorry, I'm having trouble processing your question right now. "
             "Please try again in a moment, or contact our admission office directly "
