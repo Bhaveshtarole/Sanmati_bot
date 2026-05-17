@@ -26,6 +26,7 @@ except FileNotFoundError:
 _client = AsyncOpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=settings.OPENROUTER_API_KEY,
+    timeout=15.0,  # 15-second timeout to avoid long waits
 )
 
 _SYSTEM_PROMPT = (
@@ -107,6 +108,7 @@ async def get_ai_response(
             model="openrouter/owl-alpha",
             messages=messages,
             temperature=0.3,
+            max_tokens=300,  # Keep replies short & fast for WhatsApp
         )
         
         reply = response.choices[0].message.content
