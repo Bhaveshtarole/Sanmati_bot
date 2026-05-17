@@ -528,6 +528,23 @@ async def _send_welcome_menu(phone: str, lang: str, request: Request) -> tuple[s
     return "[Interactive Welcome Menu]", "interactive"
 
 
+# ── Deduplication cache ──────────────────────────────────────────────
+# Meta retries webhook calls if response is slow. This prevents
+# processing the same message multiple times and sending duplicate replies.
+import time as _time
+
+_processed_messages: dict[str, float] = {}  # message_id -> timestamp
+_DEDUP_WINDOW_SECONDS = 300  # 5 minutes
+
+
+def _cleanup_old_messages():
+    """Remove entries older than the dedup window to prevent memory leak."""
+    cutoff = _time.time() - _DEDUP_WINDOW_SECONDS
+    stale = [mid for mid, ts in _processed_messages.items() if ts < cutoff]
+    for mid in stale:
+        del _processed_messages[mid]
+
+
 # ── POST /webhook — Incoming messages ───────────────────────────────
 
 @router.post("/webhook")
@@ -554,6 +571,15 @@ async def handle_webhook(request: Request, db: Session = Depends(get_db)):
     if not phone or not message_text:
         logger.info("\u23ed\ufe0f Ignoring payload \u2014 no phone or message_text")
         return {"status": "ignored"}
+
+    # ── Deduplication: skip if we already processed this message ──────
+    if message_id and message_id in _processed_messages:
+        logger.info("\u23ed\ufe0f Skipping duplicate message: %s", message_id)
+        return {"status": "duplicate"}
+
+    if message_id:
+        _processed_messages[message_id] = _time.time()
+        _cleanup_old_messages()
 
     # Mark message as read immediately (shows blue ticks)
     await mark_as_read(message_id)
